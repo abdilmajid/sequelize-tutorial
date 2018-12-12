@@ -74,19 +74,80 @@ app.use(cors());
 // })
 
 
+// //Create a post (post model has title & body)
+// const post = models.post.build({
+//   title: 'Hello',
+//   body: 'this is a body post'
+// })
+// // Saving post
+// post.save().then(newPost => {
+//   console.log(newPost)
+// })
 
-app.get('/', (req, res) => {
+// //Create comment(comment model has title, body, postId[comes from comment.associate function])
+// const comment = models.comment.build({
+//   title: 'Comment',
+//   body: 'Body',
+//   postId: 3 //id in the post table
+// })
 
-  models.task.findAll().then(tasks => {
+// // Saving comment
+// comment.save().then(newComment => {
+//   console.log(newComment)
+// })
 
-    console.log(tasks)
+// console.log('Now fetching posts from comments table')
+// const post = models.post.findOne({
+//   include: [
+//     {
+//       model: models.comment,
+//       as: 'comments' // make sure this matches alias
+//     }
+//   ]
+// }).then(post => {
+//   console.log(post.comments.length)
+// })
 
-    res.render('index', {tasks: tasks})
-  })
+
+
+// console.log('Now fetching the comment')
+// models.comment.findOne({
+//   include: [
+//     {
+//       model: models.post, //Join happens between comment & post
+//       as: 'post'
+//     }
+//   ]
+// }).then(comment => {
+//   console.log(comment.post)
+// })
+
+
+
+// app.get('/', (req, res) => {
+//   models.task.findOne().then(tasks => {
+//     // console.log(tasks)
+//     res.render('index', {tasks: tasks})
+//   })
+// })
+
+
+models.post.bulkCreate([
+  {
+    title: 'Post Title',
+    body: 'Post Body',
+    username: 'john',
+  },
+  {
+    title: 'Post Title 2',
+    body: 'Post Body 2',
+    username: 'mary',    
+  }
+]).then(() => {
+  return models.post.findAll()
+}).then(posts => {
+  console.log(posts)
 })
-
-
-
 
 
  
